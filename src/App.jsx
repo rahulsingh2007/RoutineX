@@ -1,48 +1,37 @@
-import { CircleCheck, Flame, LayoutList } from 'lucide-react';
+import { useTheme } from './context/useTheme';
+import Navbar from './Navbar';
+import Header from './Components/Header';
+import TotalHabits from './Components/TotalHabits';
+import TotalCompletion from './Components/TotalCompletion';
+import MaxStreak from './Components/MaxStreak';
+import AddNewHabit from './Components/AddNewHabit';
+import FilterRow from './Components/FilterRow';
+import HabitShow from './Components/HabitShow';
 
 const App = () => {
+  const { isDark } = useTheme();
   return (
-    <div className="bg-[#0F172B] min-h-screen text-[#FFFFFF] p-8">
-      <h1 className="text-4xl font-bold tracking-tight">Habit Tracker</h1>
-      <p className="text-[#64748B] text-sm font-medium mt-1 mb-8">Friday, September 25</p>
-
-      <div className="flex flex-wrap gap-4 max-w-5xl">
-        <div className="bg-[#1D293D] border border-[#314158] rounded-2xl p-6 flex items-start justify-center gap-4 w-55">
-          <div className="text-[#6366F1] bg-[#0F172B] p-3 rounded-xl">
-            <LayoutList size={22} strokeWidth={2} />
+    <>
+      <Navbar />
+      <div className={`min-h-screen p-4 sm:p-6 lg:p-8 flex flex-col items-center transition-colors duration-300 ${isDark ? 'bg-[#0F172B] text-white' : 'bg-linear-to-br from-slate-50 via-indigo-50/40 to-violet-50/30 text-slate-900'
+        }`}>
+        <div className="w-full max-w-5xl flex flex-col items-start">
+          <Header />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+            <TotalHabits />
+            <TotalCompletion />
+            <MaxStreak />
           </div>
-          <div className="flex flex-col gap-1">
-            <span className="text-[#475569] text-xs font-bold tracking-widest uppercase">Total Habits</span>
-            <span className="text-4xl font-semibold tracking-tight text-slate-100">0</span>
+          <AddNewHabit />
+          <div className='flex flex-col sm:flex-row gap-3 mt-7 w-full sm:w-auto'>
+            <FilterRow />
           </div>
-        </div>
-
-        <div className="bg-[#1D293D] border border-[#314158] rounded-2xl p-6 flex items-start justify-center gap-4 w-55">
-          <div className="text-[#10B981] bg-[#0F172B] p-3 rounded-xl">
-            <CircleCheck size={22} strokeWidth={2} />
-          </div>
-          <div className="flex flex-col gap-1">
-            <span className="text-[#475569] text-xs font-bold tracking-widest uppercase">Today's Completion</span>
-            <span className="text-4xl font-semibold tracking-tight text-slate-100">0%</span>
-            <span className="text-[#475569] text-xs mt-1">0 of 0 done</span>
-          </div>
-        </div>
-
-        <div className="bg-[#1D293D] border border-[#314158] rounded-2xl p-6 flex items-start justify-center gap-4 w-55">
-          <div className="text-[#F97316] bg-[#0F172B] p-3 rounded-xl">
-            <Flame size={22} strokeWidth={2} />
-          </div>
-          <div className="flex flex-col gap-1">
-            <span className="text-[#475569] text-xs font-bold tracking-widest uppercase">Max Streak</span>
-            <span className="text-4xl font-semibold tracking-tight text-slate-100">0d</span>
+          <div>
+            <HabitShow />
           </div>
         </div>
       </div>
-
-      <div className='bg-[#1D293D] border border-[#314158] rounded-2xl w-173 mt-7 p-6'>
-        <p>Add New Habit</p>
-      </div>
-    </div>
+    </>
   )
 }
 
