@@ -26,7 +26,7 @@ const App = () => {
           <div className='flex flex-col sm:flex-row gap-3 mt-7 w-full sm:w-auto'>
             <FilterRow />
           </div>
-          <div>
+          <div className="w-full">
             <HabitShow />
           </div>
         </div>
