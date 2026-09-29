@@ -12,6 +12,7 @@ import { useState } from 'react';
 const App = () => {
   const { isDark } = useTheme();
   const [habits, setHabits] = useState([]);
+  
   const addHabit = (name, category) => {
     const newHabit = {
       id: crypto.randomUUID(),
@@ -22,9 +23,11 @@ const App = () => {
     };
     setHabits((currentHabits) => [...currentHabits, newHabit]);
   }
+  
   const deleteHabit = (id) => {
     setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== id));
   };
+  
   const toggleHabit = (id) => {
     setHabits((prevHabits) =>
       prevHabits.map((habit) => {
@@ -39,6 +42,33 @@ const App = () => {
         return habit;
       }));
   };
+
+  const [filter, setFilter] = useState("All");
+  const [filterCategory, setFilterCategory] = useState('All Categories');
+
+  const filteredHabits = () => {
+    return habits.filter(habit => {
+      let matchesStatus = false;
+      switch (filter) {
+        case "Completed":
+          matchesStatus = habit.isCompletedToday;
+          break;
+        case "Pending":
+          matchesStatus = !habit.isCompletedToday;
+          break;
+        default:
+          matchesStatus = true;
+      }
+      let matchesCategory = false;
+      if (filterCategory === "All Categories") {
+        matchesCategory = true;
+      } else {
+        matchesCategory = habit.category === filterCategory;
+      }
+
+      return matchesStatus && matchesCategory;
+    });
+  }
 
   console.log(habits);
 
@@ -56,10 +86,15 @@ const App = () => {
           </div>
           <AddNewHabit addHabit={addHabit} />
           <div className='flex flex-col sm:flex-row gap-3 mt-7 w-full sm:w-auto'>
-            <FilterRow />
+            <FilterRow 
+              filter={filter} 
+              setFilter={setFilter} 
+              filterCategory={filterCategory} 
+              setFilterCategory={setFilterCategory} 
+            />
           </div>
           <div className="w-full">
-            <HabitShow habits={habits} deleteHabit={deleteHabit} toggleHabit={toggleHabit} />
+            <HabitShow deleteHabit={deleteHabit} toggleHabit={toggleHabit} habits={filteredHabits()} />
           </div>
         </div>
       </div>

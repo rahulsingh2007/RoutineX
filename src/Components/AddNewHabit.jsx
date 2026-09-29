@@ -40,7 +40,8 @@ const AddNewHabit = ({ addHabit }) => {
                     <option value="Other">Other</option>
                 </select>
                 <button
-                    onClick={() => addHabit(name,category)}
+                    onClick={() => addHabit(name, category)}
+                    disabled={name.trim().length <= 3}
                     className={`flex items-center justify-center gap-1.5 font-semibold text-sm transition-all duration-200 px-5 py-2 rounded-xl cursor-pointer ${isDark
                         ? 'bg-[#4F39F6] hover:bg-[#615FFF] text-white shadow-[0_4px_15px_rgba(79,57,246,0.4)] hover:shadow-[0_4px_20px_rgba(79,57,246,0.6)]'
                         : 'bg-indigo-500 hover:bg-indigo-600 text-white shadow-[0_4px_15px_rgba(99,102,241,0.35)] hover:shadow-[0_4px_20px_rgba(99,102,241,0.5)]'

@@ -6,10 +6,10 @@ const Navbar = () => {
     const { isDark, toggleTheme } = useTheme();
     return (
         <div className={`flex flex-row items-center justify-between px-5 py-3 sticky top-0 z-50 backdrop-blur-sm border-b transition-colors duration-300 ${isDark
-                ? 'bg-[#0F171F] border-[#1E293B]'
-                : 'bg-white/90 border-slate-200'
+            ? 'bg-[#0F171F] border-[#1E293B]'
+            : 'bg-white/90 border-slate-200'
             }`}>
-            <div className='flex flex-row items-center gap-2 cursor-pointer select-none'>
+            <div onClick={() => window.location.reload()} className='flex flex-row items-center gap-2 cursor-pointer select-none'>
                 <img src={Logo} alt="RoutineX" className='w-9' />
                 <p className={`text-xl font-bold tracking-tight transition-colors duration-200 ${isDark ? 'text-white' : 'text-slate-900'}`}>RoutineX</p>
             </div>
