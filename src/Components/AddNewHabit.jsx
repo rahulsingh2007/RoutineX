@@ -6,6 +6,7 @@ const AddNewHabit = ({ addHabit }) => {
     const { isDark } = useTheme();
     const [name, setName] = useState('');
     const [category, setCategory] = useState('Health');
+    const isTooShort = name.trim().length > 0 && name.trim().length <= 3;
     return (
         <div className={`border rounded-2xl w-full mt-7 p-6 shadow-sm ${isDark
             ? 'bg-[#1D293D] border-[#314158]'
@@ -13,12 +14,17 @@ const AddNewHabit = ({ addHabit }) => {
             }`}>
             <p className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Add New Habit</p>
             <div className='w-full flex flex-col'>
+                {isTooShort && (
+                    <p className="text-xs font-medium text-red-500 animate-pulse">
+                        Please enter more than 3 letters.
+                    </p>
+                )}
                 <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Morning run, Read 20 pages..."
-                    className={`mt-4 border-2 rounded-xl placeholder:font-medium focus:outline-none px-3 py-2 w-full transition-colors duration-200 ${isDark
+                    className={`mt-3 border-2 rounded-xl placeholder:font-medium focus:outline-none px-3 py-2 w-full transition-colors duration-200 ${isDark
                         ? 'bg-[#0F172B] border-[#314158] placeholder-[#62748E] focus:border-indigo-600 text-white'
                         : 'bg-slate-50 border-slate-200 placeholder-slate-400 focus:border-indigo-400 focus:bg-white text-slate-800 focus:shadow-[0_0_0_3px_rgba(99,102,241,0.1)]'
                         }`}
@@ -40,7 +46,12 @@ const AddNewHabit = ({ addHabit }) => {
                     <option value="Other">Other</option>
                 </select>
                 <button
-                    onClick={() => addHabit(name, category)}
+                    onClick={() => {
+                        if (name.trim().length > 3) {
+                            addHabit(name, category);
+                            setName('');
+                        }
+                    }}
                     disabled={name.trim().length <= 3}
                     className={`flex items-center justify-center gap-1.5 font-semibold text-sm transition-all duration-200 px-5 py-2 rounded-xl cursor-pointer ${isDark
                         ? 'bg-[#4F39F6] hover:bg-[#615FFF] text-white shadow-[0_4px_15px_rgba(79,57,246,0.4)] hover:shadow-[0_4px_20px_rgba(79,57,246,0.6)]'
