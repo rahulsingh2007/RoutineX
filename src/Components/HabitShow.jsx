@@ -1,5 +1,5 @@
 import { useTheme } from '../context/useTheme';
-import { Flame, Trash } from 'lucide-react';
+import { Flame, Sparkles, Trash } from 'lucide-react';
 
 const HabitShow = ({ habits, deleteHabit, toggleHabit }) => {
     const { isDark } = useTheme();
@@ -26,6 +26,19 @@ const HabitShow = ({ habits, deleteHabit, toggleHabit }) => {
                     : 'text-[#754100] bg-[#FFCC96] border-[#754100]';
         }
     };
+    if (habits.length === 0) {
+        return (
+            <>
+                <p className='text-xs text-[#57708E] font-semibold self-start mt-6'>0 habits shown</p>
+                <div className='flex flex-col items-center mt-20'>
+                    <p className='text-[#7C86FF] font-bold bg-[#1D293D] p-4 rounded-2xl border border-[#314158]'><Sparkles size={26} /></p>
+                    <p className='font-semibold text-[#CAD5E2]'>No habits here yet</p>
+                    <p className='text-sm text-[#57708E]'>Add a habit above or try a different filter.</p>
+                </div>
+            </>
+        );
+    }
+
 
     return (
         <div className='w-full'>
