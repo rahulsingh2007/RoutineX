@@ -23,7 +23,7 @@ const AddNewHabit = ({ addHabit }) => {
                         : 'bg-slate-50 border-slate-200 placeholder-slate-400 focus:border-indigo-400 focus:bg-white text-slate-800 focus:shadow-[0_0_0_3px_rgba(99,102,241,0.1)]'
                         }`}
                 />
-                <p className={`text-xs self-end mt-1 ${isDark ? 'text-[#50748E]' : 'text-slate-400'}`}>0/30</p>
+                <p className={`text-xs self-end mt-1 ${isDark ? 'text-[#50748E]' : 'text-slate-400'}`}>{name.length}/30</p>
             </div>
 
             <div className='flex flex-col sm:flex-row gap-3 w-full mt-3'>

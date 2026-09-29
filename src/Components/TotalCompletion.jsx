@@ -3,6 +3,15 @@ import { useTheme } from '../context/useTheme';
 
 const TotalCompletion = ({ habits }) => {
     const { isDark } = useTheme();
+    let habitCount = habits.filter(habit => habit.isCompletedToday).length;
+    let habitPercent = () => {
+        if (habits.length === 0) {
+            return `${0}%`;
+        } else {
+            return `${((habitCount / habits.length) * 100).toFixed(0)}%`;
+        }
+    };
+
     return (
         <div className={`border rounded-2xl p-6 flex items-start justify-center gap-4 w-full shadow-sm ${isDark
             ? 'bg-[#1D293D] border-[#314158]'
@@ -15,8 +24,8 @@ const TotalCompletion = ({ habits }) => {
                 <span className={`text-xs font-bold tracking-widest uppercase ${isDark ? 'text-[#475569]' : 'text-slate-400'}`}>
                     Today's Completion
                 </span>
-                <span className={`text-4xl font-semibold tracking-tight ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>0%</span>
-                <span className={`text-xs mt-1 ${isDark ? 'text-[#475569]' : 'text-slate-400'}`}>0 of {habits.length} done</span>
+                <span className={`text-4xl font-semibold tracking-tight ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{habitPercent()}</span>
+                <span className={`text-xs mt-1 ${isDark ? 'text-[#475569]' : 'text-slate-400'}`}>{habitCount} of {habits.length} done</span>
             </div>
         </div>
     )
