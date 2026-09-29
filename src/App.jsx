@@ -52,7 +52,7 @@ const App = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             <TotalHabits habits={habits} />
             <TotalCompletion habits={habits} />
-            <MaxStreak />
+            <MaxStreak habits={habits} />
           </div>
           <AddNewHabit addHabit={addHabit} />
           <div className='flex flex-col sm:flex-row gap-3 mt-7 w-full sm:w-auto'>
