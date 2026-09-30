@@ -29,7 +29,7 @@ Whether you're developing healthy lifestyle practices, staying on top of work go
 
 Experience **RoutineX** in action:
 
-🔗 **[Live Demo](https://routinex-react.netlify.app/)** *(Replace with your deployment link)*
+🔗 **[Live Demo](https://routinex-react.netlify.app/)**
 
 > *RoutineX runs entirely client-side with LocalStorage persistence — your habits remain securely stored in your browser without requiring external database setups.*
 
