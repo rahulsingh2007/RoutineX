@@ -7,36 +7,72 @@ import MaxStreak from './Components/MaxStreak';
 import AddNewHabit from './Components/AddNewHabit';
 import FilterRow from './Components/FilterRow';
 import HabitShow from './Components/HabitShow';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const App = () => {
   const { isDark } = useTheme();
-  const [habits, setHabits] = useState([]);
-  
+  const [habits, setHabits] = useState(() => {
+    const savedHabits = localStorage.getItem("habits");
+    return savedHabits ? JSON.parse(savedHabits) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("habits", JSON.stringify(habits));
+  }, [habits]);
+
   const addHabit = (name, category) => {
     const newHabit = {
       id: crypto.randomUUID(),
       name: name,
       category: category,
       streak: 0,
-      isCompletedToday: false
+      isCompletedToday: false,
+      lastCompletedDate: null
     };
     setHabits((currentHabits) => [...currentHabits, newHabit]);
   }
-  
+
   const deleteHabit = (id) => {
     setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== id));
   };
-  
+
+  const getToday = () => {
+    const date = new Date();
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  };
+
   const toggleHabit = (id) => {
     setHabits((prevHabits) =>
       prevHabits.map((habit) => {
         if (habit.id === id) {
           const nextCompletedState = !habit.isCompletedToday;
+          if (!nextCompletedState) {
+            return {
+              ...habit,
+              isCompletedToday: false,
+            };
+          }
+
+          const today = getToday();
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          const yesterdayString = `${yesterday.getFullYear()}-${String(
+            yesterday.getMonth() + 1
+          ).padStart(2, "0")}-${String(yesterday.getDate()).padStart(2, "0")}`;
+
+          let newStreak = 1;
+          if (habit.lastCompletedDate === yesterdayString) {
+            newStreak = habit.streak + 1;
+          }
           return {
             ...habit,
             isCompletedToday: nextCompletedState,
-            streak: nextCompletedState ? habit.streak + 1 : Math.max(0, habit.streak - 1),
+            lastCompletedDate: nextCompletedState
+              ? today
+              : habit.lastCompletedDate,
+            streak: nextCompletedState
+              ? newStreak
+              : habit.streak,
           };
         }
         return habit;
@@ -48,7 +84,7 @@ const App = () => {
 
   const filteredHabits = () => {
     return habits.filter(habit => {
-      let matchesStatus = false;
+      let matchesStatus;
       switch (filter) {
         case "Completed":
           matchesStatus = habit.isCompletedToday;
@@ -59,7 +95,7 @@ const App = () => {
         default:
           matchesStatus = true;
       }
-      let matchesCategory = false;
+      let matchesCategory;
       if (filterCategory === "All Categories") {
         matchesCategory = true;
       } else {
@@ -86,11 +122,11 @@ const App = () => {
           </div>
           <AddNewHabit addHabit={addHabit} />
           <div className='flex flex-col sm:flex-row gap-3 mt-7 w-full sm:w-auto'>
-            <FilterRow 
-              filter={filter} 
-              setFilter={setFilter} 
-              filterCategory={filterCategory} 
-              setFilterCategory={setFilterCategory} 
+            <FilterRow
+              filter={filter}
+              setFilter={setFilter}
+              filterCategory={filterCategory}
+              setFilterCategory={setFilterCategory}
             />
           </div>
           <div className="w-full">

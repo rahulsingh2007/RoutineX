@@ -4,7 +4,7 @@ import { useTheme } from '../context/useTheme';
 const MaxStreak = ({ habits }) => {
     const maxStreak = habits.reduce((currentMax, habit) => {
         return Math.max(currentMax, habit.streak)
-    },0)
+    }, 0)
     const { isDark } = useTheme();
     return (
         <div className={`border rounded-2xl p-6 flex items-start justify-center gap-4 w-full shadow-sm ${isDark
