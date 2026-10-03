@@ -11,9 +11,27 @@ import { useState, useEffect } from 'react';
 
 const App = () => {
   const { isDark } = useTheme();
+  const getToday = () => {
+    const date = new Date();
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  };
   const [habits, setHabits] = useState(() => {
     const savedHabits = localStorage.getItem("habits");
-    return savedHabits ? JSON.parse(savedHabits) : [];
+    if (!savedHabits) {
+      return [];
+    }
+    const parsedHabits = JSON.parse(savedHabits);
+    const today = getToday();
+    const updatedHabits = parsedHabits.map((habit) => {
+      if (habit.lastCompletedDate !== today) {
+        return {
+          ...habit,
+          isCompletedToday: false,
+        };
+      }
+      return habit;
+    });
+    return updatedHabits;
   });
 
   useEffect(() => {
@@ -36,10 +54,6 @@ const App = () => {
     setHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== id));
   };
 
-  const getToday = () => {
-    const date = new Date();
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-  };
 
   const toggleHabit = (id) => {
     setHabits((prevHabits) =>
